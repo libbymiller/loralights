@@ -10,6 +10,12 @@ Simple 2 pin button - using xiao pin D1 and ground
 Used https://shop.pimoroni.com/collections/adafruit/products/neopixel-ring-16-x-5050-rgbw-leds-w-integrated-drivers which I had lying round
 Also works with e.g. https://shop.pimoroni.com/products/led-rgb-clear-common-cathode?variant=44298388170 with a bit of fiddling
 
+This antenna https://thepihut.com/products/lora-antenna-with-pigtail-868mhz-black
+
+Advice on paramters:
+    radio.begin(868.0, 500.0, 12, 8, 0x12, 22, 20); //overkill probably, slower
+    radio.begin(868.0, 500.0, 11, 7, 0x12, 22, 8);//probably just as fast, longer range
+
 */
 
 //lora stuff
@@ -77,7 +83,10 @@ void setup() {
   
   // initialize LoRa SX1262 with default settings
   Serial.print(F("[SX1262] Initializing ... "));
-  int state = radio.begin();
+//int state = radio.begin();
+//see https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+  int state = radio.begin(868.0, 500.0, 12, 8, 0x12, 22, 20); //That might take longer to transmit and is probably overkill
+//radio.begin(868.0, 500.0, 11, 7, 0x12, 22, 8) ; //just as fast and longer range
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
